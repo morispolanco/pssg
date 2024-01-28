@@ -46,7 +46,7 @@ def main():
 
     # Button to submit inputs
     if st.button("Submit"):
-         inputs = {
+          inputs = {
             "name": name,
             "location": location,
             "email": email,
