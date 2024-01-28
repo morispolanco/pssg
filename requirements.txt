@@ -1,3 +1,3 @@
 streamlit
 requests
-tkinter
+python3-tkinter
