@@ -53,8 +53,8 @@ def main():
             "product_or_service": product_or_service,
             "price": price
         }
-        result = make_api_request(inputs)
-        st.write(result)
+    result = make_api_request(inputs)
+    st.write(result)
 
 if __name__ == "__main__":
     main()
