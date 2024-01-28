@@ -24,9 +24,13 @@ def make_api_request(inputs):
     })
     response = requests.post(ENDPOINT, headers=headers, data=data)
     response_json = response.json()
-    # Remove headers
-    for header in response_json["headers"]:
-        del header["name"]
+    
+    # Check if "headers" key exists in the response
+    if "headers" in response_json:
+        # Remove headers
+        for header in response_json["headers"]:
+            del header["name"]
+            
     return response_json["body"]
 
 # Streamlit app
