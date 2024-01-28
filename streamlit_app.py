@@ -10,7 +10,7 @@ ENDPOINT = "https://api.respell.ai/v1/run"
 SPELL_ID = "n834YRtN-Sw_lg1U4nZJ7"
 SPELL_VERSION_ID = "ZM_PQe-MjMZxERXkBmhvf"
 
-# Function to make API request
+# Function to make API request and return the result
 def make_api_request(inputs):
     headers = {
         "Authorization": f"Bearer {API_KEY}",
@@ -24,12 +24,10 @@ def make_api_request(inputs):
     })
     response = requests.post(ENDPOINT, headers=headers, data=data)
     response_json = response.json()
-
-    # Check if 'body' key exists in the response
     if 'body' in response_json:
         return response_json['body']
     else:
-        return response_json  # Return the entire response if 'body' is not present
+        return response_json
 
 # Streamlit app
 def main():
@@ -54,7 +52,8 @@ def main():
         }
         result = make_api_request(inputs)
 
-        # Display result
+        # Display only the result
+        st.write("### Result:")
         st.write(result)
 
 if __name__ == "__main__":
