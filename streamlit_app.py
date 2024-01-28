@@ -41,7 +41,7 @@ def main():
             "location": location,
             "product_or_service": product_or_service,
             "price": price,
-            "language": language
+            "language": input
         }
         response = run_api(inputs)
         
