@@ -34,14 +34,12 @@ def main():
     st.title("Personalized Sales Strategy Generator")
     st.write("An innovative application that has the ability to generate the best sales strategy for a given product at a given price, all based on a person's LinkedIn profile data")
 
-    # Input fields in a single column
-    col1 = st.column()
-    with col1:
-        name = st.text_input("Name")
-        location = st.text_input("Location")
-        email = st.text_input("Email")
-        product_or_service = st.text_input("Product or Service")
-        price = st.text_input("Price")
+    # Input fields
+    name = st.text_input("Name")
+    location = st.text_input("Location")
+    email = st.text_input("Email")
+    product_or_service = st.text_input("Product or Service")
+    price = st.text_input("Price")
 
     # Button to submit inputs
     if st.button("Submit"):
