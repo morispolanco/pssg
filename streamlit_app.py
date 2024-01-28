@@ -1,6 +1,3 @@
-Here is an example of a Streamlit app that uses the provided API:
-
-```python
 import requests
 import json
 import streamlit as st
@@ -53,6 +50,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-```
 
-This app uses the Streamlit library to create a simple user interface with input fields for the five
