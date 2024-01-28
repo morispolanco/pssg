@@ -1,6 +1,7 @@
 import tkinter as tk
 import requests
 import json
+import streamlit as st
 
 def llamar_api():
     # Hacer la solicitud a la API
