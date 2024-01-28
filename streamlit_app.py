@@ -1,4 +1,4 @@
-import requests 
+import requests
 import json
 import streamlit as st
 
@@ -24,12 +24,14 @@ def make_api_request(inputs):
     })
     response = requests.post(ENDPOINT, headers=headers, data=data)
     response_json = response.json()
-    return response_json
+    # Remove headers
+    for header in response_json["headers"]:
+        del header["name"]
+    return response_json["body"]
 
 # Streamlit app
 def main():
-    st.title("Personalized Sales Strategy Generator")
-    st.write("An innovative application that has the ability to generate the best sales strategy for a given product at a given price, all based on a person's LinkedIn profile data")
+    st.title("API Call Example")
 
     # Input fields
     name = st.text_input("Name")
@@ -48,10 +50,7 @@ def main():
             "price": price
         }
         result = make_api_request(inputs)
-
-        # Display full JSON response
-        st.write("### Full JSON Response:")
-        st.json(result)
+        st.write(result)
 
 if __name__ == "__main__":
     main()
