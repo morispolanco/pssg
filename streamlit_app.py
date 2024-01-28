@@ -1,69 +1,58 @@
-import streamlit as st
+Here is an example of a Streamlit app that uses the provided API:
+
+```python
 import requests
 import json
+import streamlit as st
 
-def spell_call(spellId, spellVersionId, inputs):
-    """Makes a POST request to the Respell.ai API to run a spell.
+# API key and endpoint
+API_KEY = "260cee54-6d54-48ba-92e8-bf641b5f4805"
+ENDPOINT = "https://api.respell.ai/v1/run"
 
-    Args:
-    spellId: The ID of the spell to run.
-    spellVersionId: The ID of the spell version to run.
-    inputs: A dictionary of input values for the spell.
+# Spell ID and version ID
+SPELL_ID = "n834YRtN-Sw_lg1U4nZJ7"
+SPELL_VERSION_ID = "ZM_PQe-MjMZxERXkBmhvf"
 
-    Returns:
-    A dictionary containing the spell output.
-    """
-
-    # Set the API endpoint and headers
-    api_endpoint = "https://api.respell.ai/v1/run"
+# Function to make API request
+def make_api_request(inputs):
     headers = {
-        "Authorization": "Bearer YOUR_API_KEY",
+        "Authorization": f"Bearer {API_KEY}",
         "Accept": "application/json",
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
     }
-
-    # Prepare the request data
-    data = {
-        "spellId": spellId,
-        "spellVersionId": spellVersionId,
-        "inputs": inputs,
-    }
-
-    # Make the POST request
-    response = requests.post(api_endpoint, headers=headers, data=json.dumps(data))
-
-    # Return the spell output
+    data = json.dumps({
+        "spellId": SPELL_ID,
+        "spellVersionId": SPELL_VERSION_ID,
+        "inputs": inputs
+    })
+    response = requests.post(ENDPOINT, headers=headers, data=data)
     return response.json()
 
+# Streamlit app
 def main():
-    st.title("Respell.ai Spell Runner")
+    st.title("My App")
 
-    # Get the spell ID and spell version ID from the user
-    spell_id = st.text_input("Spell ID")
-    spell_version_id = st.text_input("Spell Version ID")
-
-    # Get the input values from the user
-    product_or_service = st.text_input("Product or service")
+    # Input fields
+    product_or_service = st.text_input("Product or Service")
     price = st.text_input("Price")
     location = st.text_input("Location")
     name = st.text_input("Name")
     email = st.text_input("Email")
 
-    # Prepare the input values for the spell
-    inputs = {
-        "product_or_service": product_or_service,
-        "price": price,
-        "location": location,
-        "name": name,
-        "email": email,
-    }
-
-    # Call the spell
-    if st.button("Run Spell"):
-        spell_output = spell_call(spell_id, spell_version_id, inputs)
-        # Display the spell output
-        st.write("Spell output:")
-        st.json(spell_output)
+    # Button to submit inputs
+    if st.button("Submit"):
+        inputs = {
+            "product_or_service": product_or_service,
+            "price": price,
+            "location": location,
+            "name": name,
+            "email": email
+        }
+        result = make_api_request(inputs)
+        st.write(result)
 
 if __name__ == "__main__":
     main()
+```
+
+This app uses the Streamlit library to create a simple user interface with input fields for the five
