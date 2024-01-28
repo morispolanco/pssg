@@ -46,8 +46,8 @@ def main():
         }
         response = run_api(inputs)
         
-        # Show the full response
-        st.subheader("Full Response:")
+        # Mostrar los resultados
+        st.subheader("Resultados:")
         st.json(response)
 
 if __name__ == "__main__":
