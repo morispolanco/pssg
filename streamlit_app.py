@@ -50,7 +50,6 @@ def main():
     api_response = call_api(inputs)
 
     if api_response:
-        st.header("API Response")
         # Beautify the response
         for key, value in api_response.items():
             st.write(f"**{key}:** {value}")
