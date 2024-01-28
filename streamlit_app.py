@@ -24,14 +24,7 @@ def make_api_request(inputs):
     })
     response = requests.post(ENDPOINT, headers=headers, data=data)
     response_json = response.json()
-    
-    # Check if "headers" key exists in the response
-    if "headers" in response_json:
-        # Remove headers
-        for header in response_json["headers"]:
-            del header["name"]
-            
-    return response_json["body"]
+    return response_json
 
 # Streamlit app
 def main():
@@ -56,8 +49,7 @@ def main():
         }
         result = make_api_request(inputs)
 
-        # Results section in Markdown
-        st.markdown("## Results:")
+        # Display the entire response
         st.write(result)
 
 if __name__ == "__main__":
