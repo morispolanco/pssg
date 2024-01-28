@@ -24,7 +24,12 @@ def make_api_request(inputs):
     })
     response = requests.post(ENDPOINT, headers=headers, data=data)
     response_json = response.json()
-    return response_json["body"]
+
+    # Check if 'body' key exists in the response
+    if 'body' in response_json:
+        return response_json['body']
+    else:
+        return response_json  # Return the entire response if 'body' is not present
 
 # Streamlit app
 def main():
@@ -48,6 +53,8 @@ def main():
             "price": price
         }
         result = make_api_request(inputs)
+
+        # Display result
         st.write(result)
 
 if __name__ == "__main__":
