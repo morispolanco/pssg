@@ -23,31 +23,38 @@ def make_api_request(inputs):
         "inputs": inputs
     })
     response = requests.post(ENDPOINT, headers=headers, data=data)
-    return response.json()
+    response_json = response.json()
+    # Remove headers
+    for header in response_json["headers"]:
+        del header["name"]
+    return response_json["body"]
 
 # Streamlit app
 def main():
-    st.title("My App")
+    st.title("Personalized Sells Strategy Generator")
+    st.write("An innovative application that has the ability to generate the best sales strategy for a given product at a given price, all based on a person's Linkedin profile data")
 
-    # Input fields
-    product_or_service = st.text_input("Product or Service")
-    price = st.text_input("Price")
-    location = st.text_input("Location")
-    name = st.text_input("Name")
-    email = st.text_input("Email")
+    # Input fields in a left column
+    col1, col2 = st.beta_columns(2)
+    with col1:
+        name = st.text_input("Name")
+        location = st.text_input("Location")
+        email = st.text_input("Email")
+    with col1:
+        product_or_service = st.text_input("Product or Service")
+        price = st.text_input("Price")
 
     # Button to submit inputs
     if st.button("Submit"):
-        inputs = {
-            "product_or_service": product_or_service,
-            "price": price,
-            "location": location,
+         inputs = {
             "name": name,
-            "email": email
+            "location": location,
+            "email": email,
+            "product_or_service": product_or_service,
+            "price": price
         }
         result = make_api_request(inputs)
         st.write(result)
 
 if __name__ == "__main__":
     main()
-
