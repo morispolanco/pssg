@@ -1,8 +1,9 @@
+# Author: Moris Polanco
 import streamlit as st
 import requests
 import json
 
-# Función para realizar la solicitud a la API
+# Function to make the request to the API
 def run_api(inputs):
     url = "https://api.respell.ai/v1/run"
     headers = {
@@ -17,33 +18,37 @@ def run_api(inputs):
     response = requests.post(url, headers=headers, data=json.dumps(data))
     return response.json()
 
-# Crear la aplicación Streamlit
+# Create the Streamlit application
 def main():
-    st.title("App de Streamlit con API Respell")
+    st.title("Personalized Sales Strategy Generator")
+    st.write("Welcome to the personalized sales strategy generator, a revolutionary tool designed to transform your sales approach. This application crafts tailored sales strategies based on LinkedIn user profiles and specific product details.")
 
-    # Definir los campos de entrada
-    email = st.text_input("Email")
-    name = st.text_input("Name")
-    location = st.text_input("Location")
-    price = st.text_input("Price")
-    product_or_service = st.text_input("Product or Service")
-    user_input = st.text_input("Input")
+    # Define the input fields in a column layout
+    col1, col2 = st.columns(2)
+    with col1:
+        name = st.text_input("Name")
+        email = st.text_input("Email")
+        location = st.text_input("Location")
+    with col2:
+        product_or_service = st.text_input("Product or Service")
+        price = st.text_input("Price")
+        language = st.text_input("Language")
 
-    # Ejecutar la solicitud a la API cuando se hace clic en el botón
-    if st.button("Submit"):
+    # Execute the request to the API when the button is clicked
+    if st.button("Generate Strategy"):
         inputs = {
-            "email": email,
             "name": name,
+            "email": email,
             "location": location,
-            "price": price,
             "product_or_service": product_or_service,
-            "input": user_input
+            "price": price,
+            "language": language
         }
         response = run_api(inputs)
         
-        # Mostrar los resultados
-        st.subheader("Resultados:")
-        st.json(response)
+        # Show only the strategy in Markdown format
+        st.subheader("Strategy:")
+        st.markdown(response["strategy"])
 
 if __name__ == "__main__":
     main()
