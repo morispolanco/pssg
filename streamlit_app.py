@@ -1,9 +1,8 @@
-# Author: Moris Polanco
 import streamlit as st
 import requests
 import json
 
-# Function to make the request to the API
+# Función para realizar la solicitud a la API
 def run_api(inputs):
     url = "https://api.respell.ai/v1/run"
     headers = {
@@ -48,7 +47,7 @@ def main():
         
         # Mostrar los resultados
         st.subheader("Resultados:")
-        st.json(response)
+        st.markdown(response)
 
 if __name__ == "__main__":
     main()
