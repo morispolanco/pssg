@@ -2,44 +2,68 @@ import streamlit as st
 import requests
 import json
 
-st.title("Call API")
+def spell_call(spellId, spellVersionId, inputs):
+    """Makes a POST request to the Respell.ai API to run a spell.
 
-email = st.text_input("Email", "Example text")
-name = st.text_input("Name", "Example text")
-location = st.text_input("Location", "Example text")
-price = st.text_input("Price", "Example text")
-product_or_service = st.text_input("Product or Service", "Example text")
-language = st.text_input("Language", "Example text")
+    Args:
+    spellId: The ID of the spell to run.
+    spellVersionId: The ID of the spell version to run.
+    inputs: A dictionary of input values for the spell.
 
-if st.button("Call API"):
-    # Check for empty inputs
-    if not email or not name or not location or not price or not product_or_service or not language:
-        st.error("Please fill in all fields.")
-    else:
-        try:
-            response = requests.post(
-                "https://api.respell.ai/v1/run",
-                headers={
-                    "Authorization": "Bearer 260cee54-6d54-48ba-92e8-bf641b5f4805",
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                data=json.dumps({
-                    "spellId": "SwM1TRZNvRQjaA-bJ969H",
-                    "spellVersionId": "qHiqa1EwXNP1LNoj9Ow_l",
-                    "inputs": {
-                        "email": email,
-                        "name": name,
-                        "location": location,
-                        "price": price,
-                        "product_or_service": product_or_service,
-                        "language": language,  # Corrected field name
-                    }
-                }),
-            )
-            if response.status_code == 200:
-                st.json(response.json())
-            else:
-                st.error("API request failed.")
-        except Exception as e:
-            st.error(f"Error: {str(e)}")
+    Returns:
+    A dictionary containing the spell output.
+    """
+
+    # Set the API endpoint and headers
+    api_endpoint = "https://api.respell.ai/v1/run"
+    headers = {
+        "Authorization": "Bearer YOUR_API_KEY",
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+    }
+
+    # Prepare the request data
+    data = {
+        "spellId": spellId,
+        "spellVersionId": spellVersionId,
+        "inputs": inputs,
+    }
+
+    # Make the POST request
+    response = requests.post(api_endpoint, headers=headers, data=json.dumps(data))
+
+    # Return the spell output
+    return response.json()
+
+def main():
+    st.title("Respell.ai Spell Runner")
+
+    # Get the spell ID and spell version ID from the user
+    spell_id = st.text_input("Spell ID")
+    spell_version_id = st.text_input("Spell Version ID")
+
+    # Get the input values from the user
+    product_or_service = st.text_input("Product or service")
+    price = st.text_input("Price")
+    location = st.text_input("Location")
+    name = st.text_input("Name")
+    email = st.text_input("Email")
+
+    # Prepare the input values for the spell
+    inputs = {
+        "product_or_service": product_or_service,
+        "price": price,
+        "location": location,
+        "name": name,
+        "email": email,
+    }
+
+    # Call the spell
+    if st.button("Run Spell"):
+        spell_output = spell_call(spell_id, spell_version_id, inputs)
+        # Display the spell output
+        st.write("Spell output:")
+        st.json(spell_output)
+
+if __name__ == "__main__":
+    main()
