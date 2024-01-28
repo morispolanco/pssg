@@ -46,12 +46,9 @@ def main():
         }
         response = run_api(inputs)
         
-        # Handle response with error checking
-        if "strategy" in response:
-            st.subheader("Strategy:")
-            st.markdown(response["strategy"])
-        else:
-            st.error("No strategy found in the response.")
+        # Show the full response
+        st.subheader("Full Response:")
+        st.json(response)
 
 if __name__ == "__main__":
     main()
