@@ -31,8 +31,8 @@ def make_api_request(inputs):
 
 # Streamlit app
 def main():
-    st.title("Personalized Sells Strategy Generator")
-    st.write("An innovative application that has the ability to generate the best sales strategy for a given product at a given price, all based on a person's Linkedin profile data")
+    st.title("Personalized Sales Strategy Generator")
+    st.write("An innovative application that has the ability to generate the best sales strategy for a given product at a given price, all based on a person's LinkedIn profile data")
 
     # Input fields in a left column
     col1, col2 = st.beta_columns(2)
@@ -40,21 +40,21 @@ def main():
         name = st.text_input("Name")
         location = st.text_input("Location")
         email = st.text_input("Email")
-    with col1:
+    with col2:
         product_or_service = st.text_input("Product or Service")
         price = st.text_input("Price")
 
     # Button to submit inputs
     if st.button("Submit"):
-          inputs = {
+        inputs = {
             "name": name,
             "location": location,
             "email": email,
             "product_or_service": product_or_service,
             "price": price
         }
-    result = make_api_request(inputs)
-    st.write(result)
+        result = make_api_request(inputs)
+        st.write(result)
 
 if __name__ == "__main__":
     main()
