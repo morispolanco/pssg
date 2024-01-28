@@ -24,7 +24,7 @@ def make_api_request(inputs):
     })
     response = requests.post(ENDPOINT, headers=headers, data=data)
     response_json = response.json()
-    return response_json
+    return response_json["body"]
 
 # Streamlit app
 def main():
@@ -48,8 +48,6 @@ def main():
             "price": price
         }
         result = make_api_request(inputs)
-
-        # Display the entire response
         st.write(result)
 
 if __name__ == "__main__":
