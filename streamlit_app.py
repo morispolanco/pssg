@@ -1,53 +1,51 @@
-import streamlit as st
 import requests
 import json
+import streamlit as st
 
-# Función para realizar la solicitud a la API
-def run_api(inputs):
-    url = "https://api.respell.ai/v1/run"
-    headers = {
-        "Authorization": "Bearer 260cee54-6d54-48ba-92e8-bf641b5f4805",
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-    }
-    data = {
-        "spellId": "SwM1TRZNvRQjaA-bJ969H",
-        "inputs": inputs
-    }
-    response = requests.post(url, headers=headers, data=json.dumps(data))
-    return response.json()
+# Function to call the API and beautify the response
+def call_api():
+    response = requests.post(
+        "https://api.respell.ai/v1/run",
+        headers={
+            # This is your API key
+            "Authorization": "Bearer 260cee54-6d54-48ba-92e8-bf641b5f4805",
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        data=json.dumps({
+            "spellId": "SwM1TRZNvRQjaA-bJ969H",
+            # This field can be omitted to run the latest published version
+            "spellVersionId": "qHiqa1EwXNP1LNoj9Ow_l",
+            # Fill in values for each of your 6 dynamic input blocks
+            "inputs": {
+                "email": "Example text",
+                "name": "Example text",
+                "location": "Example text",
+                "price": "Example text",
+                "product_or_service": "Example text",
+                "language_2": "Example text",
+            }
+        }),
+    )
 
-# Create the Streamlit application
+    if response.status_code == 200:
+        result = response.json()
+        return result
+    else:
+        return None
+
+# Streamlit app
 def main():
-    st.title("Personalized Sales Strategy Generator")
-    st.write("Welcome to the personalized sales strategy generator, a revolutionary tool designed to transform your sales approach. This application crafts tailored sales strategies based on LinkedIn user profiles and specific product details.")
+    st.title("Respell AI API Response")
 
-    # Define the input fields in a column layout
-    col1, col2 = st.columns(2)
-    with col1:
-        name = st.text_input("Name")
-        email = st.text_input("Email")
-        location = st.text_input("Location")
-    with col2:
-        product_or_service = st.text_input("Product or Service")
-        price = st.text_input("Price")
-        language = st.text_input("Language")
+    # Call the API
+    api_response = call_api()
 
-    # Execute the request to the API when the button is clicked
-    if st.button("Generate Strategy"):
-        inputs = {
-            "name": name,
-            "email": email,
-            "location": location,
-            "product_or_service": product_or_service,
-            "price": price,
-            "language": input
-        }
-        response = run_api(inputs)
-        
-        # Mostrar los resultados
-        st.subheader("Resultados:")
-        st.markdown(response)
+    if api_response:
+        st.header("API Response")
+        st.json(api_response)
+    else:
+        st.error("Failed to fetch API response")
 
 if __name__ == "__main__":
     main()
