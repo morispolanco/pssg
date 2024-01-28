@@ -1,56 +1,62 @@
+import tkinter as tk
 import requests
 import json
-import streamlit as st
 
-# API key and endpoint
-API_KEY = "260cee54-6d54-48ba-92e8-bf641b5f4805"
-ENDPOINT = "https://api.respell.ai/v1/run"
-
-# Spell ID and version ID
-SPELL_ID = "n834YRtN-Sw_lg1U4nZJ7"
-SPELL_VERSION_ID = "ZM_PQe-MjMZxERXkBmhvf"
-
-# Function to make API request
-def make_api_request(inputs):
-    headers = {
-        "Authorization": f"Bearer {API_KEY}",
+def llamar_api():
+    # Hacer la solicitud a la API
+    response = requests.post(
+      "https://api.respell.ai/v1/run",
+      headers={
+        # Esta es tu clave API
+        "Authorization": "Bearer 260cee54-6d54-48ba-92e8-bf641b5f4805",
         "Accept": "application/json",
         "Content-Type": "application/json"
-    }
-    data = json.dumps({
-        "spellId": SPELL_ID,
-        "spellVersionId": SPELL_VERSION_ID,
-        "inputs": inputs
-    })
-    response = requests.post(ENDPOINT, headers=headers, data=data)
-    response_json = response.json()
-    # Remove headers
-    for header in response_json["headers"]:
-        del header["name"]
-    return response_json["body"]
-
-# Streamlit app
-def main():
-    st.title("API Call Example")
-
-    # Input fields
-    name = st.text_input("Name")
-    location = st.text_input("Location")
-    email = st.text_input("Email")
-    product_or_service = st.text_input("Product or Service")
-    price = st.text_input("Price")
-
-    # Button to submit inputs
-    if st.button("Submit"):
-        inputs = {
-            "name": name,
-            "location": location,
-            "email": email,
-            "product_or_service": product_or_service,
-            "price": price
+      },
+      data=json.dumps({
+        "spellId": "n834YRtN-Sw_lg1U4nZJ7",
+        # Este campo se puede omitir para ejecutar la versión publicada más reciente
+        "spellVersionId": "TI7gzCPzWyPxRkwWB7FFj",
+        # Rellenar los valores para cada uno de tus 5 bloques de entrada dinámica
+        "inputs": {
+          "product_or_service": product_or_service.get(),
+          "price": price.get(),
+          "location": location.get(),
+          "name": name.get(),
+          "email": email.get(),
         }
-        result = make_api_request(inputs)
-        st.write(result)
+      }),
+    )
+    
+    # Imprimir la respuesta de la API
+    print(response.json())
 
-if __name__ == "__main__":
-    main()
+# Crear la ventana de la interfaz de usuario
+root = tk.Tk()
+root.title("Llamada a la API de Stream")
+
+# Crear y posicionar los elementos de la interfaz de usuario
+tk.Label(root, text="Producto o Servicio:").pack()
+product_or_service = tk.Entry(root)
+product_or_service.pack()
+
+tk.Label(root, text="Precio:").pack()
+price = tk.Entry(root)
+price.pack()
+
+tk.Label(root, text="Ubicación:").pack()
+location = tk.Entry(root)
+location.pack()
+
+tk.Label(root, text="Nombre:").pack()
+name = tk.Entry(root)
+name.pack()
+
+tk.Label(root, text="Email:").pack()
+email = tk.Entry(root)
+email.pack()
+
+boton_llamar_api = tk.Button(root, text="Llamar a la API", command=llamar_api)
+boton_llamar_api.pack()
+
+# Ejecutar la ventana de la interfaz de usuario
+root.mainloop()
