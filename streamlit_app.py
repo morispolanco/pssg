@@ -46,9 +46,12 @@ def main():
         }
         response = run_api(inputs)
         
-        # Show only the strategy in Markdown format
-        st.subheader("Strategy:")
-        st.markdown(response["strategy"])
+        # Handle response with error checking
+        if "strategy" in response:
+            st.subheader("Strategy:")
+            st.markdown(response["strategy"])
+        else:
+            st.error("No strategy found in the response.")
 
 if __name__ == "__main__":
     main()
