@@ -3,7 +3,7 @@ import json
 import streamlit as st
 
 # Function to call the API and beautify the response
-def call_api():
+def call_api(inputs):
     response = requests.post(
         "https://api.respell.ai/v1/run",
         headers={
@@ -13,18 +13,10 @@ def call_api():
             "Content-Type": "application/json"
         },
         data=json.dumps({
-            "spellId": "SwM1TRZNvRQjaA-bJ969H",
+            "spellId": "n834YRtN-Sw_lg1U4nZJ7",
             # This field can be omitted to run the latest published version
-            "spellVersionId": "qHiqa1EwXNP1LNoj9Ow_l",
-            # Fill in values for each of your 6 dynamic input blocks
-            "inputs": {
-                "email": "Example text",
-                "name": "Example text",
-                "location": "Example text",
-                "price": "Example text",
-                "product_or_service": "Example text",
-                "language_2": "Example text",
-            }
+            "spellVersionId": "7Rix1u6a60fm1Y-vYZM-l",
+            "inputs": inputs
         }),
     )
 
@@ -38,12 +30,30 @@ def call_api():
 def main():
     st.title("Respell AI API Response")
 
+    # Input fields
+    st.sidebar.header("Input Fields")
+    product_or_service = st.sidebar.text_input("Product or Service", "Example text")
+    price = st.sidebar.text_input("Price", "Example text")
+    location = st.sidebar.text_input("Location", "Example text")
+    name = st.sidebar.text_input("Name", "Example text")
+    email = st.sidebar.text_input("Email", "Example text")
+
+    inputs = {
+        "product_or_service": product_or_service,
+        "price": price,
+        "location": location,
+        "name": name,
+        "email": email,
+    }
+
     # Call the API
-    api_response = call_api()
+    api_response = call_api(inputs)
 
     if api_response:
         st.header("API Response")
-        st.json(api_response)
+        # Beautify the response
+        for key, value in api_response.items():
+            st.write(f"**{key}:** {value}")
     else:
         st.error("Failed to fetch API response")
 
